@@ -4,179 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Kindred Project Animation</title>
-    
-    <style>
-        /* ==========================================
-           CSS STYLES
-           ================================---------- */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            background-color: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            width: 100vw;
-            overflow: hidden;
-        }
-
-        /* Pure square container with strict left-alignment */
-        .square-container {
-            width: min(85vw, 85vh);
-            height: min(85vw, 85vh);
-            max-width: 500px;
-            max-height: 500px;
-            background-color: #ffffff;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: flex-start;
-            padding: 10%;
-        }
-
-        /* Typography & Alignment */
-        .logo-text, .dynamic-text {
-            font-size: clamp(2.2rem, 7.5vw, 3.8rem);
-            font-weight: 500;
-            line-height: 1.15;
-            letter-spacing: -0.02em;
-            text-align: left;
-        }
-
-        .logo-text {
-            color: #000000;
-            width: 100%;
-        }
-
-        /* 
-          Highlight Box:
-          - display: inline-flex + align-items: center perfectly centers text & cursor vertically.
-          - height and min-height are locked so vertical size never collapses when empty.
-        */
-        .middle-line {
-            display: inline-flex;
-            align-items: center;
-            border: 3px solid #7eabd9;
-            background-color: #7eabd9;
-            padding: 8px 14px;
-            margin: 12px 0;
-            border-radius: 0px; /* Sharp 90-degree corners */
-            
-            width: auto;
-            height: calc(1.15em + 16px); /* Locked vertical height matching padding */
-            min-height: calc(1.15em + 16px);
-            white-space: nowrap;
-            font-size: clamp(2.2rem, 7.5vw, 3.8rem);
-        }
-
-        .dynamic-text {
-            color: #ffffff;
-        }
-
-        /* Cursor matches the full height of the letters and centers cleanly */
-        .cursor {
-            display: inline-block;
-            width: 3.5px;
-            height: 1em;
-            background-color: #ffffff;
-            margin-left: 4px;
-            vertical-align: baseline;
-            animation: blink 0.8s infinite;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- ==========================================
-         HTML STRUCTURE
-         ================================---------- -->
     <div class="square-container">
         <div class="logo-text">The</div>
         
-        <div class="middle-line">
+        <div id="middle-line" class="middle-line">
             <span id="typed-text" class="dynamic-text"></span><span class="cursor"></span>
         </div>
         
         <div class="logo-text">Project</div>
     </div>
 
-    <!-- ==========================================
-         JAVASCRIPT LOGIC
-         ================================---------- -->
-    <script>
-        /* 
-          Word bank alternating every other word with "Kindred" 
-          using a wide variety of connection/growth synonyms.
-        */
-        const words = [
-            "Kindred", "Helpful", 
-            "Kindred", "Accessible", 
-            "Kindred", "Inclusive", 
-            "Kindred", "Supportive", 
-            "Kindred", "Empowered", 
-            "Kindred", "Connected", 
-            "Kindred", "United", 
-            "Kindred", "Friendly", 
-            "Kindred", "Welcoming", 
-            "Kindred", "Devoted", 
-            "Kindred", "Harmonious", 
-            "Kindred", "Caring"
-        ];
-        
-        const typedTextElement = document.getElementById("typed-text");
-        
-        let wordIndex = 0;
-        let charIndex = 0;
-        let isDeleting = false;
-        let typingSpeed = 120;
-
-        function typeWriter() {
-            const currentWord = words[wordIndex];
-
-            if (isDeleting) {
-                // Delete a character
-                typedTextElement.textContent = currentWord.substring(0, charIndex - 1);
-                charIndex--;
-                typingSpeed = 55; // Faster speed when deleting
-            } else {
-                // Type a character
-                typedTextElement.textContent = currentWord.substring(0, charIndex + 1);
-                charIndex++;
-                typingSpeed = 110; // Normal typing speed
-            }
-
-            // Finished typing the current word
-            if (!isDeleting && charIndex === currentWord.length) {
-                // Longer pause on "Kindred", shorter on synonyms
-                typingSpeed = currentWord === "Kindred" ? 2400 : 1600;
-                isDeleting = true;
-            } 
-            // Finished deleting the word completely
-            else if (isDeleting && charIndex === 0) {
-                isDeleting = false;
-                // Move to the next word in the pool sequentially
-                wordIndex = (wordIndex + 1) % words.length;
-                typingSpeed = 400; // Brief pause before next word starts
-            }
-
-            setTimeout(typeWriter, typingSpeed);
-        }
-
-        // Initialize animation when page loads
-        document.addEventListener("DOMContentLoaded", () => {
-            setTimeout(typeWriter, 800);
-        });
-    </script>
-
+    <script src="script.js"></script>
 </body>
 </html>
